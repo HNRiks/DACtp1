@@ -77,6 +77,7 @@ public class somatorio extends HttpServlet {
             Cookie cookie;
             Cookie[] cookies;
             cookies = request.getCookies();
+            //Busca um cookie contador, if any
             if (cookies != null) {
                 for (Cookie c : cookies) {
                     if (c.getName().equals("cont")) {
@@ -85,7 +86,7 @@ public class somatorio extends HttpServlet {
                     }
                 }
             }
-            //Se houver cookies, mas não houver um cookie contador
+            //Se não houver um cookie contador, ou cookie algum
             if (contBrowser == 0) {
                 contBrowser = 1;
             }
