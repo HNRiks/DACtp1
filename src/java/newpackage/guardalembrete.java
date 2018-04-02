@@ -34,7 +34,35 @@ public class guardalembrete extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException 
     {
-        processRequest(request, response);
+        String username = (String) request.getAttribute("username");
+        List<lembrete> lembretes = (List<lembrete>) request.getSession().getAttribute("lembretes");
+        List<lembrete> resposta = new ArrayList();
+        
+        if(lembretes != null)
+        {
+            for(int i = 0; i < lembretes.size(); i++)
+            {
+                if(lembretes.get(i).getUsername() == username)
+                    resposta.add(lembretes.get(i));
+            }
+        }
+        
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        out.println("<HTML><BODY>");
+        if(resposta != null && !resposta.isEmpty())
+        {
+            for(int i = 0; i < resposta.size(); i++)
+            {
+                out.println("");
+                out.println("<title>" + resposta.get(i).GetTitle() + "</title>");
+                out.println("<P>" + resposta.get(i).GetBody() + "</P>");
+                out.println("");
+            }
+        }
+        
+        out.println("</BODY></HTML>");
+        out.close();
     }
 
     @Override
@@ -54,14 +82,12 @@ public class guardalembrete extends HttpServlet
         lembretes.add(novoLembrete);
         //Atualiza a lista de lembretes da sessão
         request.getSession().setAttribute("lembretes", lembretes);
-        
-        processRequest(request, response);
     }
     
     @Override
     public String getServletInfo() 
     {
-        return "Short description";
-    }// </editor-fold>
+        return "Guarda Lembrete Eletrônico";
+    }
 
 }
